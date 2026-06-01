@@ -10,30 +10,32 @@ const app = express();
 
 
 // =======================
-// ✅ CORS CONFIG FIX
+// ✅ CORS CONFIG (SAFE VERSION)
 // =======================
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "http://127.0.0.1:5500",
-      "https://pab-forntend-r637.vercel.app",
-      "https://pab-forntend.vercel.app"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+const corsOptions = {
+  origin: [
+    "http://localhost:3000",
+    "http://127.0.0.1:5500",
+    "https://pab-forntend-r637.vercel.app",
+    "https://pab-forntend.vercel.app"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 
 
 // =======================
-// ✅ HANDLE PRE-FLIGHT (IMPORTANT)
+// ❌ REMOVE app.options("*")
+// (INI PENYEBAB CRASH DI VERCEL)
 // =======================
-app.options("*", cors());
+// JANGAN DIPAKAI:
+// app.options("*", cors());
 
 
 // =======================
-// ✅ MIDDLEWARE BODY PARSER
+// BODY PARSER
 // =======================
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -47,7 +49,7 @@ app.use("/api", productRoutes);
 
 
 // =======================
-// TEST ROUTE
+// HEALTH CHECK
 // =======================
 app.get("/", (req, res) => {
   res.json({
@@ -57,11 +59,10 @@ app.get("/", (req, res) => {
 
 
 // =======================
-// SERVER (LOCAL ONLY)
+// LOCAL SERVER ONLY
 // =======================
 if (!process.env.VERCEL) {
   const PORT = process.env.PORT || 3000;
-
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
@@ -69,6 +70,6 @@ if (!process.env.VERCEL) {
 
 
 // =======================
-// EXPORT (VERCEL)
+// EXPORT FOR VERCEL
 // =======================
 module.exports = app;
