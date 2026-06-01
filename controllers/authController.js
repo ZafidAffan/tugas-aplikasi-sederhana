@@ -2,16 +2,7 @@ const db = require("../config/firebase");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// 👇 TARUH DI SINI (PALING ATAS)
-router.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 
-  if (req.method === "OPTIONS") return res.sendStatus(200);
-
-  next();
-});
 // REGISTER
 const register = async (req, res) => {
   try {
