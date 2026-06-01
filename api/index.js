@@ -8,7 +8,7 @@ const productRoutes = require("../routes/productRoutes");
 
 const app = express();
 
-// ✅ CORS FIX (WAJIB)
+// ✅ CORS FIX
 app.use(cors({
     origin: [
         "http://localhost:3000",
@@ -19,7 +19,7 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-app.options("*", cors());
+// ❌ JANGAN pakai app.options("*")
 
 app.use(express.json());
 
