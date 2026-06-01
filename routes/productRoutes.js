@@ -9,7 +9,7 @@ const {
 const verifyToken = require("../middleware/authMiddleware");
 
 // protected route
-router.get("/products",  getProducts);
-router.post("/products",  addProduct);
+router.get("/products", verifyToken, getProducts);
+router.post("/products", verifyToken, addProduct);
 
 module.exports = router;
